@@ -71,6 +71,7 @@ LOCAL_SRC_FILES:= \
     ueventd.cpp \
     ueventd_parser.cpp \
     watchdogd.cpp \
+    vendor_init.cpp
 
 LOCAL_MODULE:= init
 LOCAL_C_INCLUDES += \
@@ -106,6 +107,10 @@ LOCAL_STATIC_LIBRARIES := \
 LOCAL_POST_INSTALL_CMD := $(hide) mkdir -p $(TARGET_ROOT_OUT)/sbin; \
     ln -sf ../init $(TARGET_ROOT_OUT)/sbin/ueventd; \
     ln -sf ../init $(TARGET_ROOT_OUT)/sbin/watchdogd
+
+ifneq ($(strip $(TARGET_INIT_VENDOR_LIB)),)
+LOCAL_WHOLE_STATIC_LIBRARIES += $(TARGET_INIT_VENDOR_LIB)
+endif
 
 LOCAL_SANITIZE := integer
 LOCAL_CLANG := true
