@@ -115,6 +115,7 @@
 #define AID_NET_BT_STACK  3008  /* bluetooth: access config files */
 #define AID_READPROC      3009  /* Allow /proc read access */
 #define AID_WAKELOCK      3010  /* Allow system wakelock read/write access */
+#define AID_QCOM_DIAG     3011  /* can read/write /dev/diag */
 
 /* The range 5000-5999 is also reserved for OEM, and must never be used here. */
 #define AID_OEM_RESERVED_2_START 5000
@@ -210,6 +211,7 @@ static const struct android_id_info android_ids[] = {
     { "shell",         AID_SHELL, },
     { "cache",         AID_CACHE, },
     { "diag",          AID_DIAG, },
+    { "qcom_diag",     AID_QCOM_DIAG, },
 
     { "net_bt_admin",  AID_NET_BT_ADMIN, },
     { "net_bt",        AID_NET_BT, },
