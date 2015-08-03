@@ -614,6 +614,9 @@ int main(int argc, char** argv) {
     std::string bootmode = property_get("ro.bootmode");
     if (bootmode == "charger") {
         am.QueueEventTrigger("charger");
+    } else if (bootmode == "ffbm") {
+        KLOG_ERROR("Booting into ffbm mode\n");
+        action_for_each_trigger("ffbm", action_add_queue_tail);
     } else {
         am.QueueEventTrigger("late-init");
     }
