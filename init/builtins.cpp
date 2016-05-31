@@ -499,7 +499,6 @@ static int do_mount_all(const std::vector<std::string>& args) {
     int ret = -1;
     int child_ret = -1;
     int status;
-    char boot_mode[PROP_VALUE_MAX] = {0};
     struct fstab *fstab;
 
     const char* fstabfile = args[1].c_str();
@@ -549,13 +548,10 @@ static int do_mount_all(const std::vector<std::string>& args) {
         property_set("vold.decrypt", "trigger_default_encryption");
     } else if (ret == FS_MGR_MNTALL_DEV_NOT_ENCRYPTED) {
         property_set("ro.crypto.state", "unencrypted");
-        /* If fs_mgr determined this is an unencrypted device and we are
-         * not booting into ffbm(fast factory boot mode),then trigger
-	 * that action.
+        /* If fs_mgr determined this is an unencrypted device, then trigger
+         * that action.
          */
-        property_get("ro.bootmode", boot_mode);
-        if (strncmp(boot_mode, "ffbm", 4))
-            ActionManager::GetInstance().QueueEventTrigger("nonencrypted");
+        ActionManager::GetInstance().QueueEventTrigger("nonencrypted");
     } else if (ret == FS_MGR_MNTALL_DEV_NEEDS_RECOVERY) {
         /* Setup a wipe via recovery, and reboot into recovery */
         ERROR("fs_mgr_mount_all suggested recovery, so wiping data via recovery.\n");
@@ -570,9 +566,7 @@ static int do_mount_all(const std::vector<std::string>& args) {
 
         // Although encrypted, we have device key, so we do not need to
         // do anything different from the nonencrypted case.
-        property_get("ro.bootmode", boot_mode);
-        if (strncmp(boot_mode, "ffbm", 4))
-        	ActionManager::GetInstance().QueueEventTrigger("nonencrypted");
+        ActionManager::GetInstance().QueueEventTrigger("nonencrypted");
     } else if (ret == FS_MGR_MNTALL_DEV_NON_DEFAULT_FILE_ENCRYPTED) {
         if (e4crypt_install_keyring()) {
             return -1;
