@@ -146,7 +146,6 @@ def parse_cmdline():
     parser.add_argument('--tags_offset', help='tags offset', type=parse_int, default=0x00000100)
     parser.add_argument('--board', help='board name', default='', action=ValidateStrLenAction,
                         maxlen=16)
-    parser.add_argument('--dt', help='device tree image', default='', action=ValidateStrLenAction)
     parser.add_argument('--pagesize', help='page size', type=parse_int,
                         choices=[2**i for i in range(11,15)], default=2048)
     parser.add_argument('--id', help='print the image ID on standard output',
